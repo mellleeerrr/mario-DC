@@ -1,0 +1,14 @@
+{
+  "name": "mario-2d-game",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"const fs=require('fs'),vm=require('vm');['server.js','js/util.js','js/input.js','js/resources.js','js/sprite.js','js/font.js','js/audio.js','js/entity.js','js/action.js','js/pipe.js','js/mushroom.js','js/fireflower.js','js/star.js','js/fireball.js','js/coin.js','js/bcoin.js','js/goomba.js','js/koopa.js','js/floor.js','js/block.js','js/rubble.js','js/prop.js','js/player.js','js/flag.js','js/levels/level.js','js/levels/11.js','js/levels/11tunnel.js','js/levels/12.js','js/hud.js','js/extras.js','js/game.js'].forEach(f=>new vm.Script(fs.readFileSync(f,'utf8'),{filename:f}));console.log('All 31 scripts verified OK');\"",
+    "lint": "npm run build"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

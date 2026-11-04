@@ -1,0 +1,245 @@
+/* =========================================================
+   Супер Марио — оболочка игры (432x243, 16:9, integer scale)
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: #070b14;
+  color: #cfd8f3;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 8px 0;
+  background: radial-gradient(120% 90% at 50% 0%, #16203a 0%, #070b14 70%);
+}
+
+#game {
+  display: block;
+  aspect-ratio: 16 / 9;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #5c94fc;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 2px #1d2b4d,
+    0 0 0 4px #0d1426,
+    0 18px 50px rgba(0, 0, 0, 0.65);
+  touch-action: none;
+}
+
+#bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 10px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.controls {
+  text-align: left;
+  color: #94a6d0;
+  letter-spacing: 0.2px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.ui-btn {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cfe0ff;
+  background: #1b2745;
+  border: 1px solid #33456f;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+}
+
+.ui-btn:hover {
+  background: #25355c;
+  border-color: #47609c;
+}
+
+.ui-btn:focus-visible {
+  outline: 2px solid #8ef7ff;
+  outline-offset: 2px;
+}
+
+.ui-btn:active {
+  transform: translateY(1px);
+}
+
+.ui-btn.off {
+  color: #7d8aa8;
+  background: #161d2e;
+}
+
+.ui-select-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8ef7ff;
+  flex-shrink: 0;
+}
+
+.ui-select {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cfe0ff;
+  background: #1b2745;
+  border: 1px solid #33456f;
+  border-radius: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  max-width: 195px;
+}
+
+.ui-select:hover {
+  background: #25355c;
+  border-color: #47609c;
+}
+
+.ui-select:focus-visible {
+  outline: 2px solid #8ef7ff;
+  outline-offset: 2px;
+}
+
+.touch {
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.touch .tbtn {
+  position: absolute;
+  pointer-events: auto;
+  width: 15%;
+  max-width: 88px;
+  min-width: 44px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  background: rgba(20, 30, 55, 0.48);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(14px, 4vw, 24px);
+  font-weight: 700;
+  line-height: 1;
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.touch .tbtn:active,
+.touch .tbtn.held {
+  background: rgba(90, 140, 240, 0.6);
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.touch .up    { left: 15%; bottom: 30%; }
+.touch .down  { left: 15%; bottom: 6%; }
+.touch .left  { left: 4%;  bottom: 6%; }
+.touch .right { left: 26%; bottom: 6%; }
+.touch .z     { right: 38%; bottom: 28%; border-color: rgba(255, 224, 64, 0.75); color: #ffe040; }
+.touch .h     { right: 25%; bottom: 28%; }
+.touch .c     { right: 38%; bottom: 4%; }
+.touch .b     { right: 25%; bottom: 8%; }
+.touch .v     { right: 12%; bottom: 8%; }
+.touch .a     { right: 4%;  bottom: 22%; }
+
+@media (hover: none) and (pointer: coarse) {
+  .touch { display: block; }
+  #bar { display: none; }
+}
+
+@media (max-width: 960px) {
+  #bar {
+    font-size: 11px;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+  .controls { width: 100%; text-align: center; }
+  .spacer { display: none; }
+}
+
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #070b14;
+  z-index: 50;
+}
+
+.loadbox {
+  text-align: center;
+}
+
+.loadtitle {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #7f8fb8;
+  margin-bottom: 10px;
+}
+
+.bar {
+  width: 220px;
+  height: 8px;
+  background: #1b2745;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#loading-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4f8cff, #8ef7ff);
+  transition: width 0.12s linear;
+}

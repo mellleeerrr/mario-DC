@@ -1,0 +1,5 @@
+{
+  "name": "Супер Марио",
+  "description": "Ретро Super Mario Bros на HTML5 Canvas: 16:9, русские надписи, HUD, мобильное управление.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Супер Марио: Экшен — Marvel, DC Лига Справедливости и Терминатор</title>
+  <meta name="description" content="Масштабный экшен Супер Марио на HTML5 Canvas: 10 уровней, 22 героя (Marvel, DC Лига Справедливости, Бэтмен, Терминатор), физика взрывов, цепные реакции и уникальные Z-способности.">
+  <meta property="og:title" content="Супер Марио: Экшен — Marvel, DC Лига Справедливости и Терминатор">
+  <meta property="og:description" content="Масштабный экшен Супер Марио на HTML5 Canvas: 10 уровней, 22 героя (Marvel, DC Лига Справедливости, Бэтмен, Терминатор), физика взрывов, цепные реакции и уникальные Z-способности.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#070b14">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <div id="app">
+    <div id="stage">
+      <canvas id="game" width="432" height="243" aria-label="Игровое поле Супер Марио: Экшен"></canvas>
+
+      <div id="touch" class="touch" aria-hidden="true">
+        <div class="dpad">
+          <button class="tbtn up" type="button" data-action="UP" aria-label="Вверх">▲</button>
+          <button class="tbtn left" type="button" data-action="LEFT" aria-label="Влево">◀</button>
+          <button class="tbtn right" type="button" data-action="RIGHT" aria-label="Вправо">▶</button>
+          <button class="tbtn down" type="button" data-action="DOWN" aria-label="Вниз">▼</button>
+        </div>
+        <div class="abtns">
+          <button class="tbtn z" type="button" data-action="ABILITY" aria-label="Z-способность героя">Z</button>
+          <button class="tbtn h" type="button" data-action="TACTICAL" aria-label="Тактика и парирование">X</button>
+          <button class="tbtn c" type="button" data-action="AK47" aria-label="Оружие и Ульта">C</button>
+          <button class="tbtn b" type="button" data-action="TEAMUP" aria-label="Напарник Team-Up">T</button>
+          <button class="tbtn v" type="button" data-action="CAR" aria-label="Техника и захват авиации">V</button>
+          <button class="tbtn a" type="button" data-action="JUMP" aria-label="Прыжок и планер">A</button>
+        </div>
+      </div>
+    </div>
+
+    <footer id="bar">
+      <p class="controls"><b>Z</b> — супер · <b>X</b> — парир/добивание · <b>C</b> — огонь/ульта · <b>T</b> — дуэт · <b>R</b> — перезарядка · <b>Q/E</b> — герой · <b>V</b> — Camry/Авиа</p>
+      <div class="spacer"></div>
+      <label class="ui-select-wrap" for="select-hero">
+        <span>ГЕРОЙ:</span>
+        <select id="select-hero" class="ui-select" aria-label="Выбор персонажа"></select>
+      </label>
+      <label class="ui-select-wrap" for="select-level">
+        <span>МИР:</span>
+        <select id="select-level" class="ui-select" aria-label="Выбор уровня"></select>
+      </label>
+      <label class="ui-select-wrap" for="select-mode">
+        <span>РЕЖИМ:</span>
+        <select id="select-mode" class="ui-select" aria-label="Режим игры">
+          <option value="campaign">КАМПАНИЯ</option>
+          <option value="bossrush">БОСС-РАШ</option>
+          <option value="waves">ВОЛНЫ</option>
+          <option value="timeattack">НА ВРЕМЯ</option>
+        </select>
+      </label>
+      <label class="ui-select-wrap" for="select-zkey">
+        <span>КЛАВИША Z:</span>
+        <select id="select-zkey" class="ui-select" aria-label="Назначение клавиши способности">
+          <option value="KeyZ">Z</option>
+          <option value="KeyF">F</option>
+          <option value="KeyG">G</option>
+          <option value="ShiftLeft">Shift</option>
+        </select>
+      </label>
+      <label class="ui-select-wrap" for="select-vfx">
+        <span>VFX:</span>
+        <select id="select-vfx" class="ui-select" aria-label="Интенсивность спецэффектов">
+          <option value="1">100%</option>
+          <option value="0.6">60%</option>
+          <option value="0.3">30%</option>
+        </select>
+      </label>
+      <button id="btn-mute" class="ui-btn" type="button">ЗВУК: ВКЛ</button>
+      <button id="btn-fullscreen" class="ui-btn" type="button">ПОЛНЫЙ ЭКРАН</button>
+    </footer>
+  </div>
+
+  <div id="loading" role="status" aria-live="polite">
+    <div class="loadbox">
+      <div class="loadtitle">ЗАГРУЗКА</div>
+      <div class="bar"><div id="loading-bar"></div></div>
+    </div>
+  </div>
+
+  <script src="js/util.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/sprite.js"></script>
+  <script src="js/font.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/entity.js"></script>
+  <script src="js/action.js"></script>
+  <script src="js/pipe.js"></script>
+  <script src="js/mushroom.js"></script>
+  <script src="js/fireflower.js"></script>
+  <script src="js/star.js"></script>
+  <script src="js/fireball.js"></script>
+  <script src="js/coin.js"></script>
+  <script src="js/bcoin.js"></script>
+  <script src="js/goomba.js"></script>
+  <script src="js/koopa.js"></script>
+  <script src="js/floor.js"></script>
+  <script src="js/block.js"></script>
+  <script src="js/rubble.js"></script>
+  <script src="js/prop.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/flag.js"></script>
+  <script src="js/levels/level.js"></script>
+  <script src="js/levels/11.js"></script>
+  <script src="js/levels/11tunnel.js"></script>
+  <script src="js/levels/12.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/extras.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
